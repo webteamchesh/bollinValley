@@ -1,0 +1,26 @@
+:root {
+    --cecGreen: #206c49;
+}
+
+.navbar-brand:hover,
+.nav-item:hover {
+    border-bottom: solid 4px var(--cecGreen);
+}
+.navbar-brand,
+.nav-item {
+    border-bottom: solid 4px rgb(0,0,0,0);
+}
+
+.navbar-toggler:focus,
+.navbar-toggler {
+    color: var(--cecGreen);
+    border-color: var(--cecGreen);
+}
+
+
+
+a:focus {
+    outline: 4px solid #ffa100;
+    -webkit-transition: outline-color 0.2s ease-out;
+    transition: outline-color 0.2s ease-out;
+}
