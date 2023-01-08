@@ -29,4 +29,10 @@ a:focus {
 }
 
 
-
+@media (min-width: 768px) {
+.hoverElem {
+    position: absolute;
+    margin-bottom: 2rem;
+    bottom: 0%;
+  }
+}
