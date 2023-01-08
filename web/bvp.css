@@ -18,7 +18,7 @@
 }
 
 
-
+button:focus,
 a:focus {
     outline: 4px solid #ffa100;
     -webkit-transition: outline-color 0.2s ease-out;
