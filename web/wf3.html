@@ -186,14 +186,15 @@
       };
 
       const randNum = (n) => {
-        return Math.ceil(Math.random() * n) + 1;
+        return Math.ceil(Math.random() * n);
       };
+
       const makeCard = () => {
         return  `<div class="col-12 col-md-6 col-lg-4 px-3">
                   <div class="h-100 card" >
                     <img src="https://placehold.co/600x400"" class="img-fluid card-img-top" alt="placeholder">
                     <div class="card-body">
-                    <p><strong>${filler(randNum(2))}</strong></p>
+                    <p><strong>${filler(randNum(3))}</strong></p>
                       <p class="card-text">${filler(10 + randNum(10))}.</p>
                     </div>
                   </div>

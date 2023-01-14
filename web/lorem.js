@@ -2,11 +2,12 @@ const lorem = ["sit","voluptas","iure","placeat","quidem","exercitationem","offi
 
 const filler = (n) => {
   let i = Math.floor(Math.random() * 1000);
-  let msg = `${lorem[i][0].toUpperCase()}${lorem[i].slice(1)}`;
-  while (--n) {
+  return Array(n).fill(0).reduce((acc,_,j) => {
     i = (i + 1) % 1000;
-    msg += ` ${lorem[i]}`;
-  }
-  return msg;
+    return [...acc, j ? lorem[i] : initCap(lorem[i])];
+  },[]).join(' ');
 };
 
+const initCap = (str) => {
+  return str[0].toUpperCase() + str.slice(1);
+};
