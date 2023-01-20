@@ -1,47 +1,84 @@
+/* Style for Bollin Valley */
+
 :root {
-    --cecGreen: #206c49;
+  --cecGreen: #206c49;
 }
 
-#bvpLogo:hover {
+.footLinkDiv:hover #bvpLogoFoot,
+.headLinkDiv:hover #bvpLogo {
   border: solid 4px var(--cecGreen);
 }
 
-#bvpHead:hover,
-.nav-item:hover {
-    border-bottom: solid 4px var(--cecGreen);
+footer li a:hover,
+footer a p:hover,
+.dropdown-item:hover,
+.headLinkDiv:hover #bvpHead,
+.footLinkDiv:hover #bvpFoot,
+.nav-link:hover {
+  border-bottom: solid 4px var(--cecGreen);
 }
 
-#bvpLogo {
-  border: solid 4px rgb(0,0,0,0);
+.nav-link.dropdown-toggle {
+  border-bottom: none;
 }
 
+#bvpLogo,
+#bvpLogoFoot {
+  border: solid 4px rgb(0, 0, 0, 0);
+}
+
+footer li a,
+footer a p,
 #bvpHead,
-.nav-item {
-    border-bottom: solid 4px rgb(0,0,0,0);
+.nav-link,
+.dropdown-item {
+  border-bottom: solid 4px rgb(0, 0, 0, 0);
 }
 
 .navbar-toggler:focus,
 .navbar-toggler {
-    color: var(--cecGreen);
-    border-color: var(--cecGreen);
+  color: var(--cecGreen);
+  border-color: var(--cecGreen);
 }
 
-button:hover {
+a.btn:hover {
   background: white !important;
 }
 
+a:focus > span,
 button:focus,
-a.navlink:focus {
-    outline: 4px solid #ffa100 !important;
-    -webkit-transition: outline-color 0.2s ease-out;
-    transition: outline-color 0.2s ease-out;
+a:not(:has(> span.link)):focus {
+  outline: 4px solid #ffa100 !important;
+  -webkit-transition: outline-color 0.2s ease-out;
+  transition: outline-color 0.2s ease-out;
 }
 
 img,
 footer,
 .col-lg-12,
-.placeholder  {
+#navbarSupportedContent,
+.placeholder,
+.navbar {
   border: 1px solid black;
+}
+
+.navbar-expand-lg {
+  border: none;
+  padding: 0;
+}
+
+.hoverElem {
+  opacity: 0.9;
+}
+
+footer,
+footer a {
+  background: #c8c8c8;
+  color: black;
+}
+
+footer a {
+  text-decoration: none !important;
 }
 
 .navbar {
@@ -54,17 +91,48 @@ footer,
   }
 }
 
-
 @media (max-width: 768px) {
-  #bvpHead {
-    display: none;
+  #bvpHead,
+  #bvpFoot {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) {
+  #navbarSupportedContent {
+    justify-content: center;
+  }
+  .navbar-expand-lg {
+    display: block !important;
   }
 }
 
 @media (min-width: 768px) {
-.hoverElem {
+  .hoverElem {
     position: absolute;
     margin-bottom: 2rem;
     bottom: 0%;
   }
+}
+
+/* Makes the dropdowns open on hover. */
+.dropdown:hover > .dropdown-menu {
+  display: block;
+}
+
+/* Making divs with links inside clickable */
+.headLinkDiv,
+.footLinkDiv,
+.linkDiv {
+  cursor: pointer;
+  position: relative;
+}
+
+.link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }

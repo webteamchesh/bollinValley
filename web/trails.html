@@ -115,9 +115,30 @@
       </div>
     </div>
 
-    <div class="container mx-4" id="content">
-      <h1>Page heading</h1>
+    <div class="position-relative">
+      <div class="row g-0 justify-content-center">
+        <img
+          class="col-12 img-fluid"
+          alt="placeholder"
+          class="placeholder"
+          src="https://placehold.co/1400x300"
+        />
+        <div class="hoverElem col-md-9 col-12">
+          <div
+            class="border border-secondary col-lg-4 col-md-6 bg-light mx-auto p-3"
+          >
+            <h1 class="text-center fw-bold mb-4">Trails</h1>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div id="content" class="container mt-4">
+      <div class="mt-4">
+        <div id="trails" class="mt-2 row g-4 justify-content-evenly"></div>
+      </div>
+    </div>
+
     <footer class="footer mt-4 py-5 text-center">
       <div class="text-center footLinkDiv d-inline-block">
         <a class="" href="/">
@@ -165,6 +186,9 @@
     </footer>
 
     <script src="./lorem.js"></script>
-    <script></script>
+    <script>
+      const trails = document.getElementById("trails");
+      trails.innerHTML = makeCols(6);
+    </script>
   </body>
 </html>
