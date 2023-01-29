@@ -116,6 +116,7 @@ footer a {
 }
 
 /* Makes the dropdowns open on hover. */
+.dropdown:active > .dropdown-menu,
 .dropdown:hover > .dropdown-menu {
   display: block;
 }
