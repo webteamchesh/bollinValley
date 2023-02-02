@@ -4,16 +4,21 @@
   --cecGreen: #206c49;
 }
 
-.footLinkDiv:hover #bvpLogoFoot,
-.headLinkDiv:hover #bvpLogo {
-  border: solid 4px var(--cecGreen);
+header {
+  padding: 0 !important;
+}
+
+:not(header):not(footer) > div > a > span.link:hover,
+.linkDiv:hover #bvpLogoFoot,
+.linkDiv:hover #bvpLogo {
+  border: solid 4px var(--cecGreen) !important;
 }
 
 footer li a:hover,
 footer a p:hover,
 .dropdown-item:hover,
-.headLinkDiv:hover #bvpHead,
-.footLinkDiv:hover #bvpFoot,
+.linkDiv:hover #bvpHead,
+.linkDiv:hover #bvpFoot,
 .nav-link:hover {
   border-bottom: solid 4px var(--cecGreen);
 }
@@ -24,7 +29,7 @@ footer a p:hover,
 
 #bvpLogo,
 #bvpLogoFoot {
-  border: solid 4px rgb(0, 0, 0, 0);
+  border: solid 4px rgb(0, 0, 0, 0) !important;
 }
 
 footer li a,
@@ -45,21 +50,16 @@ a.btn:hover {
   background: white !important;
 }
 
+/* Focus state - WCAG 2.2 */
+.dropdown-toggle:focus,
+:not(.linkDiv) > a:focus,
+div:focus,
 a:focus > span,
-button:focus,
-a:not(:has(> span.link)):focus {
-  outline: 4px solid #ffa100 !important;
+button:focus {
+  outline: 2px transparent solid;
+  box-shadow: 0 0 0 2px #ffa100, 0 0 0 4px #396196, 0 0 4px 8px #ffa100;
   -webkit-transition: outline-color 0.2s ease-out;
   transition: outline-color 0.2s ease-out;
-}
-
-img,
-footer,
-.col-lg-12,
-#navbarSupportedContent,
-.placeholder,
-.navbar {
-  border: 1px solid black;
 }
 
 .navbar-expand-lg {
@@ -122,8 +122,6 @@ footer a {
 }
 
 /* Making divs with links inside clickable */
-.headLinkDiv,
-.footLinkDiv,
 .linkDiv {
   cursor: pointer;
   position: relative;
