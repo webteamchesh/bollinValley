@@ -1,0 +1,446 @@
+<div id="bvpEvents" class="container">
+  <div ref="tableTop" class="row">
+    <div v-if="showPaginationTop && !showSelectedItem" class="my-1">
+      <nav role="navigation" aria-label="Results data navigation">
+        <ol class="pagination d-flex flex-wrap mb-2 ms-0">
+          <li class="page-item" v-bind:class="{ disabled: currentPageIndex === 0 || loading }">
+            <button
+                  class="page-link"
+                  type="button"
+                  v-on:click="goToPage(currentPageIndex)"
+                >
+                  Previous
+                </button>
+          </li>
+          <li v-if="showFirstLastBtns" class="page-item">
+            <button
+                  class="page-link"
+                  type="button"
+                  aria-label="Next"
+                  v-on:click="goToPage(1)"
+                >
+                  <span aria-hidden="true">&laquo;</span>
+                </button>
+          </li>
+          <li v-if="showPageBtns" v-for="pageBtn in pageBtns" class="page-item" v-bind:class="{ disabled: currentPageIndex === pageBtn - 1 }">
+            <button
+                  class="page-link"
+                  type="button"
+                  v-on:click="goToPage(pageBtn)"
+                >
+                  {{ pageBtn}}
+                </button>
+          </li>
+          <li v-if="showFirstLastBtns" class="page-item">
+            <button
+                  class="page-link"
+                  type="button"
+                  aria-label="Next"
+                  v-on:click="goToPage(pageCount)"
+                >
+                  <span aria-hidden="true">&raquo;</span>
+                </button>
+          </li>
+          <li class="page-item" v-bind:class="{ disabled: currentPageIndex + 1 === pageCount || loading }">
+            <button
+                  class="page-link"
+                  type="button"
+                  v-on:click="goToPage(currentPageIndex + 2)"
+                >
+                  Next
+                </button>
+          </li>
+        </ol>
+      </nav>
+      <div v-if="loading == false" class="api-results-info">
+        <p>Total results: <strong>{{ totalCount }}</strong></p>
+        <p>
+          Current page:
+          <strong>{{ currentPageIndex+1 }}</strong>
+        </p>
+      </div>
+      <div v-if="loading">
+        <div class="spinner-grow" role="status"></div>
+      </div>
+      <!-- Events output -->
+      <div v-if="!showSelectedItem" class="row gy-2">
+        <div v-for="item in items" v-on:click="() => setSelectedItem(item)" tabindex="0" class="flex-md-row d-flex linkDiv ranger-event-card card card-item align-items-center">
+          <div class="col-12 col-md-5 my-2 justify-content-center">
+            <img
+                  v-if="item.image != null"
+                  class="border border-secondary img-fluid"
+                  v-bind:src="`https://www.cheshireeast.gov.uk/${item.image.asset.sys.uri}`"
+                  v-bind:alt="item.title"
+                />
+          </div>
+          <div class="card-body align-self-center col-12 col-md-7">
+            <div class="text-center">
+              <p class="mb-1">
+                <strong>{{ item.entryTitle }}</strong>
+              </p>
+              <small>
+                    <template
+                      v-if="formatDate(item.dateStartEnd.from) === formatDate(item.dateStartEnd.to)"
+                    >
+                      <p class="mb-0">
+                        {{ formatDate(item.dateStartEnd.from) }}.
+                      </p>
+                      <p class="mb-0">
+                        <strong>Time:</strong> {{
+                        getTime(item.dateStartEnd.from) }} - {{
+                        getTime(item.dateStartEnd.to) }}.
+                      </p>
+                    </template>
+                    <template v-else>
+                      <p class="mb-0">
+                        From {{getTime(item.dateStartEnd.from)}} on
+                        {{formatDate(item.dateStartEnd.from) }}.
+                      </p>
+                      <p class="mb-0">
+                        Until {{getTime(item.dateStartEnd.to)}} on
+                        {{formatDate(item.dateStartEnd.to) }}.
+                      </p>
+                    </template>
+                  </small>
+            </div>
+            <p class="mb-0 mt-2">{{item.excerpt}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom navigation -->
+      <div v-if="showPaginationBottom && !showSelectedItem" class="mt-1 mb-1">
+        <nav aria-label="Results data navigation">
+          <ol class="pagination d-flex flex-wrap mb-0">
+            <li class="page-item" v-bind:class="{ disabled: currentPageIndex === 0 }">
+              <a class="page-link" v-on:click="goToPage(currentPageIndex)">Previous</a>
+            </li>
+            <li v-if="showFirstLastBtns" class="page-item">
+              <a class="page-link" href="#" aria-label="Next" v-on:click="goToPage(1)">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li v-if="showPageBtns" v-for="pageBtn in pageBtns" class="page-item" v-bind:class="{ disabled: currentPageIndex === pageBtn - 1 }">
+              <a class="page-link" v-on:click="goToPage(pageBtn)">{{ pageBtn}}</a>
+            </li>
+            <li v-if="showFirstLastBtns" class="page-item">
+              <a class="page-link" href="#" aria-label="Next" v-on:click="goToPage(pageCount)">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            <li class="page-item" v-bind:class="{ disabled: currentPageIndex + 1 == pageCount }">
+              <a class="page-link" v-on:click="goToPage(currentPageIndex + 2)">Next</a>
+            </li>
+          </ol>
+        </nav>
+        <div v-if="loading == false" class="mt-1 api-results-info">
+          <p>Total results: <strong>{{ totalCount }}</strong></p>
+          <p>Current page: <strong>{{ currentPageIndex+1 }}</strong></p>
+        </div>
+      </div>
+    </div>
+    <!-- Selected event details -->
+    <div v-if="showSelectedItem">
+      <button
+            ref="selectedItem"
+            v-on:click="unSetSelectedItem"
+            role="button"
+            class="btn btn-light mt-2"
+          >
+            Back to results
+          </button>
+      <h2 class="text-center">{{ selectedItem.title }}</h2>
+      <template v-if="formatDate(selectedItem.dateStartEnd.from) === formatDate(selectedItem.dateStartEnd.to)">
+        <p class="text-center fs-5">
+          {{ formatDate(selectedItem.dateStartEnd.from) }}.
+        </p>
+      </template>
+      <template v-else>
+        <p class="text-center fs-5">
+          {{formatDate(selectedItem.dateStartEnd.from)}} to
+          {{formatDate(selectedItem.dateStartEnd.to)}}.
+        </p>
+      </template>
+
+      <div class="row">
+        <div class="col-12">
+          <img
+                v-if="selectedItem.image != null"
+                class="rounded mx-auto d-block featured-img"
+                v-bind:src="`https://www.cheshireeast.gov.uk/${selectedItem.image.asset.sys.uri}`"
+                v-bind:alt="selectedItem.title"
+              />
+          <hr />
+        </div>
+        <div class="col-lg-6 pb-lg-2">
+          <h3>Description</h3>
+          <div class="" v-html="selectedItem.description"></div>
+        </div>
+        <div class="col-lg-6 pb-2">
+          <h3>Details</h3>
+          <template v-if="formatDate(selectedItem.dateStartEnd.from) === formatDate(selectedItem.dateStartEnd.to)">
+            <p>
+              <strong>Time:</strong> {{
+              getTime(selectedItem.dateStartEnd.from) }} - {{
+              getTime(selectedItem.dateStartEnd.to) }}.
+            </p>
+          </template>
+          <template v-else>
+            <p>
+              <strong>From: </strong>{{
+              getTime(selectedItem.dateStartEnd.from) }}, {{
+              formatDate(selectedItem.dateStartEnd.from) }}.
+            </p>
+            <p>
+              <strong>To: </strong>{{ getTime(selectedItem.dateStartEnd.to)
+              }}, {{ formatDate(selectedItem.dateStartEnd.to) }}.
+            </p>
+          </template>
+          <p><strong>Leader(s):</strong> {{ selectedItem.leaders }}</p>
+          <p>
+            <strong>More information:</strong>
+            <span v-html="selectedItem.eventInformation"></span>
+          </p>
+          <p><strong>Tags:</strong></p>
+          <ul>
+            <li v-for="tag in selectedItem.tags">{{ tag.name }}</li>
+          </ul>
+          <h3>Meeting point</h3>
+          <p v-html="selectedItem.meetingPoint"></p>
+          <div id="map" ref="mapDiv" class="text-center mb-3">
+            <a target="_blank" v-bind:href="`https://maps.google.com/maps?q=${selectedItem.mapLocation.lat},${selectedItem.mapLocation.lon}` " class="btn btn-light" role="button" aria-pressed="true">Get Directions <small>(opens new window)</small></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <hr />
+        <button
+              v-on:click="unSetSelectedItem"
+              role="button"
+              class="btn btn-light"
+            >
+              Back to results
+            </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+        var bvpEvents = new Vue({
+          el: '#bvpEvents',
+          data() {
+            let contentType = 'rangerEvents';
+            let projectId = 'website';
+            return {
+              accessToken: 'QCpZfwnsgnQsyHHB3ID5isS43cZnthj6YoSPtemxFGtcH15I', // API access token, replace if expired
+              linkDepth: 5, // leave at 5 if unsure.
+              pageSize: 5,
+              showPageBtns: true,
+              showFirstLastBtns: false,
+              showPaginationTop: true,
+              showPaginationBottom: true,
+              location: '',
+              locations: /Tegg's Nose|Bollin Valley|Brereton Heath/i,
+              url: `https://cms-chesheast.cloud.contensis.com/api/delivery/projects/Website/contentTypes/${contentType}/entries/`,
+              numOfPaginationBtns: 0, // Set to 0 to show all.
+              includePageCount: true, // Set whether to request the page count parameter for the API calls.
+              items: [],
+              loading: true,
+              currentPageIndex: 0,
+              totalCount: null,
+              pageCount: null,
+              pageBtns: [],
+              contentType: contentType,
+              title: '',
+              description: '',
+              fromDate: '',
+              toDate: '',
+              filterField: 'tags',
+              selectedItem: null,
+              showSelectedItem: false,
+              dateOptions: {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              },
+              rxDate: /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2})?(?:\.\d*)?Z?$/,
+            };
+          },
+          methods: {
+            toTitleCase: function (str) {
+              return str.replace(/\w\S*/g, function (txt) {
+                return (
+                  txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+                );
+              });
+            },
+            prependUrl: function (value) {
+              return `${location.protocol}//${location.host}${location.pathname}?event=${value}`;
+            },
+            createDates: function (arr) {
+              return arr.map((e) => {
+                return Object.fromEntries(
+                  Object.entries(e).map(([k, v]) => {
+                    if (k.toLowerCase().includes('date')) {
+                      if (typeof v === 'string' && v.match(this.rxDate)) {
+                        return [k, new Date(v)];
+                      } else if (typeof v === 'object') {
+                        try {
+                          return [
+                            k,
+                            {
+                              from: new Date(v['from']),
+                              to: new Date(v['to']),
+                            },
+                          ];
+                        } catch (err) {
+                          return [k, v];
+                        }
+                      }
+                    } else {
+                      return [k, v];
+                    }
+                  })
+                );
+              });
+            },
+            formatDate: function (value) {
+              return value.toLocaleString('en-GB', this.dateOptions);
+            },
+            getTime: function (value) {
+              let time = value.toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+              });
+              if (time === '0:00 pm') {
+                return '12 noon';
+              } else if (time.startsWith('0')) {
+                time = `12${time.slice(1)}`;
+              }
+              return time.replace(' ', '');
+            },
+            getBaseUrl: function () {
+              return `${this.url}?accessToken=${this.accessToken}&linkDepth=${this.linkDepth}&pageSize=500`;
+            },
+            goToPage: function (pageNum) {
+              this.$refs.tableTop.scrollIntoView();
+              this.items = this.pages[pageNum - 1];
+              this.currentPageIndex = pageNum - 1;
+            },
+            sortDate: function () {
+              return (a, b) => {
+                return a.dateStartEnd.from - b.dateStartEnd.from;
+              };
+            },
+            calculatePages: function () {
+              this.totalCount = this.copyItems.length;
+              this.pageCount = Math.ceil(this.totalCount / this.pageSize);
+              this.currentPageIndex = 0;
+              this.pageBtns = Array.from(
+                { length: this.pageCount },
+                (_, i) => i + 1
+              );
+              this.createPages();
+              this.items = this.pages[0];
+            },
+            createPages: function () {
+              this.pages = [
+                ...Array(Math.ceil(this.copyItems.length / this.pageSize)),
+              ].map((_) => this.copyItems.splice(0, this.pageSize));
+            },
+            filterLocation: function (arr) {
+              return arr.filter((e) => {
+                return (
+                  e.specificLocation &&
+                  e.specificLocation
+                    .toLowerCase()
+                    .includes(this.location.toLowerCase())
+                );
+              });
+            },
+            callAxios: function (url, slug = null) {
+              axios
+                .get(url)
+                .then((response) => {
+                  this.copyItems = this.filterLocation(
+                    this.createDates(response.data.items)
+                  );
+                  if (this.copyItems.length > 0) {
+                    this.copyItems.sort(this.sortDate());
+                  }
+                  this.loading = false;
+                  if (slug !== null) {
+                    this.setSelectedItem(
+                      this.copyItems.find((elem) => elem.sys.slug === slug)
+                    );
+                  }
+                  this.calculatePages();
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+                .finally(() => {
+                  this.loading = false;
+                });
+            },
+            setSelectedItem: function (item) {
+              this.selectedItem = item;
+              document.title = item.entryTitle;
+              this.showSelectedItem = true;
+              new URLSearchParams(window.location.search).delete('event');
+              window.history.pushState('', '', this.prependUrl(item.sys.slug));
+              setTimeout(() => this.$refs.selectedItem.scrollIntoView(), 100);
+            },
+            unSetSelectedItem: function () {
+              this.$refs.tableTop.scrollIntoView();
+              this.selectedItem = null;
+              document.title = this.title;
+              this.showSelectedItem = false;
+              window.history.pushState(
+                {},
+                '',
+                document.location.href.split('?')[0]
+              );
+            },
+            getShareableLink(selectedItem) {
+              new URLSearchParams(window.location.search).delete('event');
+              navigator.clipboard.writeText(
+                this.prependUrl(selectedItem.sys.slug)
+              );
+            },
+            back: function () {
+              location.reload();
+            },
+          },
+          mounted() {
+            this.location = this.toTitleCase(
+              document.title.match(this.locations)[0]
+            );
+            this.title = document.title;
+            const params = new Proxy(
+              new URLSearchParams(window.location.search),
+              {
+                get: (searchParams, prop) => searchParams.get(prop),
+              }
+            );
+
+            if (params.event !== null) {
+              let url = window.location.href.toLowerCase().includes('preview')
+                ? `${this.getBaseUrl()}&versionStatus=latest`
+                : this.getBaseUrl();
+              this.callAxios(url, params.event);
+            } else {
+              this.callAxios(this.getBaseUrl());
+            }
+
+            window.addEventListener('popstate', this.back, false);
+          },
+          beforeDestroy() {
+            window.removeEventListener('popstate', this.back);
+          },
+        });
+      })();
+</script>
