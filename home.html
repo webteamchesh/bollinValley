@@ -1,0 +1,280 @@
+<div id="vueHomePage">
+  <div class="position-relative mt-2">
+    <!-- Banner -->
+    <div v-if="item !== undefined" class="row g-0 justify-content-center">
+      <img
+            class="col-12 img-fluid"
+            :alt="item.bannerImage.altText"
+            :src="`https://www.bollinvalley.org.uk/${item.bannerImage.asset.sys.uri}?format=webp`"
+          />
+      <div class="hoverElem col-md-8 col-lg-7 col-xl-6 col-12" :style="{background: item.colourOfPanel}">
+        <div class="text-center p-2">
+          <h2 class="fw-bold fs-1 mb-3">What do you want to do today?</h2>
+          <ol class="text-center list-inline mb-0">
+            <li class="list-inline-item me-3">
+              <a href="./trails.html" type="button" role="button" class="btn border border-secondary">
+                <strong>Explore Bollin Valley</strong>
+              </a>
+            </li>
+            <li class="list-inline-item ms-3">
+              <a href="#" type="button" role="button" class="btn border border-secondary">
+                <strong>Join an event</strong>
+              </a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-3">
+    <!-- What we do -->
+    <div class="row g-0 align-items-end text-right">
+      <div class="row mb-3 mt-2 align-items-end">
+        <h2 class="col-12 col-md-9 ps-4">What we do</h2>
+        <p class="col-12 col-md-3 pe-4 w-auto ms-auto mb-1">
+          <a href="/new/What-we-do.aspx">What else we do</a>
+        </p>
+      </div>
+      <div class="mt-4 mb-3 col-12 col-md-8 col-lg-6 mx-auto">
+        <div class="card">
+          <img
+                src="https://placehold.co/600x400"
+                class="img-fluid card-img-top"
+                alt="placeholder"
+              />
+          <div class="card-body">
+            <p class="card-text">
+              Sit quisquam optio porro ea adipisci Recusandae dolore
+              consequuntur optio velit provident cum corrupti Eligendi
+              perspiciatis doloribus suscipit rem sapiente
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <!-- What's happening -->
+    <div class="row g-0 mt-3 align-items-end">
+      <div class="row mb-3 mt-2 align-items-end">
+        <h2 class="col-12 col-md-9 ps-4">What's happening</h2>
+        <p class="col-12 col-md-3 pe-4 w-auto ms-auto mb-1">
+          <a href="/new/Whats-happening.aspx">What else is happening</a>
+        </p>
+      </div>
+      <div class="row gy-2 mb-3">
+        <div v-for="item in whatsHappening" class="col-12 col-md-6 col-lg-4 px-3">
+          <div class="card h-100 container position-relative">
+            <span class="mb-0 pin" v-if="item.pinnedPost">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#8B0000" class="bi bi-pin" viewBox="0 0 16 16">
+  <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354zm1.58 1.408-.002-.001.002.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a4.922 4.922 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a4.915 4.915 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.775 1.775 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14c.06.1.133.191.214.271a1.78 1.78 0 0 0 .37.282z" />
+</svg>
+            </span>
+            <img
+                  v-if="item.image !== null"
+                  class="img-fluid m-2 mt-3"
+                  v-bind:src="`https://www.bollinvalley.org.uk/${item.image.asset.sys.uri}`"
+                  v-bind:alt="item.image.altText"
+                />
+            <div class="card-body">
+              <div class="row h-100 d-flex">
+                <div class="col-12">
+                  <h3 style="min-height: 2.5rem" class="mb-1 fs-6 text-center">
+                    <strong>{{ item.title }}</strong>
+                  </h3>
+                  <span v-html="item.body"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <!-- Next three events -->
+    <div class="row g-0 mt-3 align-items-end">
+      <div class="row mb-3 mt-2 align-items-end">
+        <h2 class="col-12 col-md-9 ps-4">Events</h2>
+        <p class="col-12 col-md-3 pe-4 w-auto ms-auto mb-1">
+          <a href="/new/Events.aspx">See all our events</a>
+        </p>
+      </div>
+    </div>
+    <div class="row gy-2 mb-3">
+      <div v-for="item in events" class="col-12 col-md-6 col-lg-4 px-3">
+        <div class="h-100 ">
+          <div class="linkDiv card h-100 container">
+            <a :title="item.title" :href="`${rangerPage}${item.sys.slug}`">
+              <span class="link"></span>
+            </a>
+            <img
+                v-if="item.image !== null"
+                class="img-fluid mt-4 m-md-2 mx-auto"
+                v-bind:src="`https://www.cheshireeast.gov.uk/${item.image.asset.sys.uri}`"
+                v-bind:alt="item.title"
+              />
+            <div class="card-body">
+              <div class="row h-100 d-flex">
+                <div class="col-12">
+                  <h3 style="min-height: 2.5rem" class="mb-1 fs-6 text-center">
+                    <strong>{{ item.entryTitle }}</strong>
+                  </h3>
+                  <p>{{item.excerpt}}</p>
+                </div>
+                <div class="col-12 align-self-end">
+                  <template v-if="formatDate(item.dateStartEnd.from) === formatDate(item.dateStartEnd.to)">
+                    <p class="mb-0">
+                      <small>{{ formatDate(item.dateStartEnd.from) }}.</small>
+                    </p>
+
+                    <p class="mb-0">
+                      <small>
+                          {{ getTime(item.dateStartEnd.from) }} - {{
+                          getTime(item.dateStartEnd.to) }}.
+                        </small>
+                    </p>
+                  </template>
+                  <template v-else>
+                    <p class="mb-0">
+                      <small>
+                          From {{getTime(item.dateStartEnd.from)}} on
+                          {{formatDate(item.dateStartEnd.from) }}.
+                        </small>
+                    </p>
+                    <p class="mb-0">
+                      <small>
+                          Until {{getTime(item.dateStartEnd.to)}} on
+                          {{formatDate(item.dateStartEnd.to) }}.
+                        </small>
+                    </p>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  var homePage = new Vue({
+        el: "#vueHomePage",
+        data() {
+          return {
+            accessToken: "QCpZfwnsgnQsyHHB3ID5isS43cZnthj6YoSPtemxFGtcH15I",
+            linkDepth: 5, // leave at 5 if unsure.
+            rangerPage:
+              "https://www.cheshireeast.gov.uk/leisure,_culture_and_tourism/ranger_service/ranger_events/ranger-event-listings.aspx?event=",
+            url: "https://cms-chesheast.cloud.contensis.com/api/delivery/projects/",
+            events: undefined,
+            item: undefined,
+            whatsHappening: [],
+            fromDate: "",
+            toDate: "",
+            dateOptions: {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            },
+            rxDate: /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2})?(?:\.\d*)?Z?$/,
+          };
+        },
+        methods: {
+          sortObjDate: function () {
+            return (a, b) => {
+              return a.dateStartEnd.from - b.dateStartEnd.from;
+            };
+          },
+          createDates: function (arr) {
+            return arr.map((e) => {
+              return Object.fromEntries(
+                Object.entries(e).map(([k, v]) => {
+                  if (k.toLowerCase().includes("date")) {
+                    if (typeof v === "string" && v.match(this.rxDate)) {
+                      return [k, new Date(v)];
+                    } else if (typeof v === "object") {
+                      try {
+                        return [
+                          k,
+                          {
+                            from: new Date(v["from"]),
+                            to: new Date(v["to"]),
+                          },
+                        ];
+                      } catch (err) {
+                        return [k, v];
+                      }
+                    }
+                  } else {
+                    return [k, v];
+                  }
+                })
+              );
+            });
+          },
+          formatDate: function (value) {
+            return value.toLocaleString("en-GB", this.dateOptions);
+          },
+          pinnedFirst: function (a, b) {
+            if (a.pinnedPost === b.pinnedPost) {
+              return 0;
+            }
+            return a.pinnedPost ? -1 : 1;
+          },
+          filterByLocation: function (arr, loc) {
+            return arr.filter((e) => e.specificLocation === loc);
+          },
+          getTime: function (value) {
+            let time = value.toLocaleTimeString([], {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+            if (time === "0:00 pm") {
+              return "12 noon";
+            } else if (time.startsWith("0")) {
+              time = `12${time.slice(1)}`;
+            }
+            return time.replace(" ", "");
+          },
+          baseUrl: function (project, cType) {
+            return `${this.url}${project}/contentTypes/${cType}/entries?accessToken=${this.accessToken}&linkDepth=${this.linkDepth}&pageSize=500`;
+          },
+          callAxios: function (project, cType) {
+            axios
+              .get(this.baseUrl(project, cType))
+              .then((response) => {
+                if (cType === "banner") {
+                  this.item = response.data.items[0].bannerImage[0];
+                } else if (cType === "whatsHappening") {
+                  this.whatsHappening = response.data.items;
+                  this.whatsHappening.sort(this.pinnedFirst);
+                  console.log(this.whatsHappening);
+                } else {
+                  this.events = this.filterByLocation(
+                    this.createDates(response.data.items),
+                    "Bollin Valley"
+                  );
+                  if (this.events.length > 0) {
+                    this.events.sort(this.sortObjDate());
+                  }
+                  this.events = this.events.slice(0, 3);
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          },
+        },
+        mounted() {
+          this.callAxios("website", "rangerEvents");
+          this.callAxios("bollinValley", "banner");
+          this.callAxios("bollinValley", "whatsHappening");
+        },
+      });
+</script>
