@@ -1,0 +1,47 @@
+<div id="alertApp">
+  <div class="row g-0" v-for="alert in alerts">
+    <p class="fs-4 text-center py-1" :style="{ backgroundColor: alert.backgroundColour }">
+      <strong>{{alert.message}}</strong>
+    </p>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js"></script>
+<script>
+  var alertApp = new Vue({
+  el: "#alertApp",
+  data() {
+    return {
+      accessToken: "QCpZfwnsgnQsyHHB3ID5isS43cZnthj6YoSPtemxFGtcH15I",
+      linkDepth: 5, // leave at 5 if unsure.
+      url: "https://cms-chesheast.cloud.contensis.com/api/delivery/projects/",
+      alerts: [],
+    };
+  },
+  methods: {
+    filterEnabled: function (arr) {
+      return arr.filter((e) => e.enabled === true).slice(0, 2);
+    },
+    baseUrl: function (project, cType) {
+      return `${this.url}${project}/contentTypes/${cType}/entries?accessToken=${this.accessToken}&linkDepth=${this.linkDepth}&pageSize=500`;
+    },
+    callAxios: function (project, cType) {
+      axios
+        .get(this.baseUrl(project, cType))
+        .then((response) => {
+          this.alerts = this.filterEnabled(
+            response.data.items[0].alertTextAndColour
+          );
+          //console.log(this.alerts);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+  mounted() {
+    this.callAxios("bollinValley", "alerts");
+  },
+});
+
+</script>
